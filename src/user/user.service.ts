@@ -48,7 +48,11 @@ export class UserService {
     return user;
   }
 
-  async generateJwt(user: UserEntity): Promise<string> {
+  findById(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne({where: {id}})
+  }
+
+  generateJwt(user: UserEntity): Promise<string> {
     return this.jwtService.signAsync({
       id: user.id,
       username: user.username,
