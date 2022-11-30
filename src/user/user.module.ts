@@ -4,6 +4,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { getJwtConfig } from "src/configs/jwt.config";
+import { MailModule } from "src/mail/mail.module";
 import { JwtStratagy } from "./strategies/jwt.stratagy";
 import { UserController } from "./user.controller";
 import { UserEntity } from "./user.entity";
@@ -18,7 +19,8 @@ import { UserService } from "./user.service";
       inject: [ConfigService],
       useFactory: getJwtConfig
     }),
-    PassportModule
+    PassportModule,
+    MailModule,
   ],
   controllers: [UserController],
   providers: [UserService, JwtStratagy]

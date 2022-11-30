@@ -16,6 +16,11 @@ export class UserService {
     private readonly jwtService: JwtService
     ) {}
   
+  /**
+   * Создать пользователя.
+   * @param createUserDto - данные для создания пользователя.
+   * @returns - пользователь.
+   */
   async createUser(createUserDto:CreateUserDto): Promise<UserEntity> {
     const userByEmail = await this.userRepository.findOne({
       where: {email: createUserDto.email}
@@ -32,6 +37,11 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
+  /**
+   * Авторизация пользователя.
+   * @param loginUserDto - данные для логина.
+   * @returns - пользователь.
+   */
   async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: {email: loginUserDto.email},
@@ -48,10 +58,20 @@ export class UserService {
     return user;
   }
 
+  /**
+   * Найти пользователя по id.
+   * @param id - идентификатор пользователя.
+   * @returns - пользователь.
+   */
   findById(id: number): Promise<UserEntity> {
     return this.userRepository.findOne({where: {id}})
   }
 
+  /**
+   * Сгенерировать JWT.
+   * @param user - пользователь.
+   * @returns - токен.
+   */
   generateJwt(user: UserEntity): Promise<string> {
     return this.jwtService.signAsync({
       id: user.id,
@@ -60,6 +80,11 @@ export class UserService {
     });
   }
 
+  /**
+   * Ответ, данные пользователя.
+   * @param user - пользователь.
+   * @returns - пользователь + токен.
+   */
   async buildUserResponce(user: UserEntity): Promise<UserResponceInterface> {
     return {
       user: {

@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
 import { hash } from 'bcrypt';
 
 @Entity({name: 'users'})
@@ -14,6 +14,10 @@ export class UserEntity {
 
   @Column({select: false})
   password: string;
+
+  @Column({select: false})
+    @Generated("uuid")
+    uuid: string
 
   @BeforeInsert()
   async hashPassword() {

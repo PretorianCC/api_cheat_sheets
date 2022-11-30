@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { getOrmConfig } from './configs/orm.config';
 import { TagModule } from './tag/tag.module';
 import { UserModule } from './user/user.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { UserModule } from './user/user.module';
       useFactory: getOrmConfig
     }),
     TagModule,
-    UserModule
+    UserModule,
+    MailModule
   ],
   controllers: [AppController],
   providers: [AppService],

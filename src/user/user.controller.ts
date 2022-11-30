@@ -14,13 +14,23 @@ import { UserService } from "./user.service";
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('users')
+  /**
+   * Регистрация аккаунта.
+   * @param createUserDto - данные регистрации.
+   * @returns новый пользователь или ошибка.
+   */
+   @Post('users')
   @UsePipes(new ValidationPipe())
   async createUser(@Body('user') createUserDto: CreateUserDto): Promise<UserResponceInterface> {
     const user = await this.userService.createUser(createUserDto);
     return await this.userService.buildUserResponce(user);
   }
 
+  /**
+   * Авторизация аккаунта.
+   * @param loginUserDto - данные авторизации.
+   * @returns - пользователь или ошибка.
+   */
   @Post('users/login')
   @UsePipes(new ValidationPipe())
   async login(@Body('user') loginUserDto: LoginUserDto): Promise<UserResponceInterface> {
@@ -28,10 +38,41 @@ export class UserController {
     return await this.userService.buildUserResponce(user);
   }
 
+  /**
+   * Получить данные пользователя по токену.
+   * @param payload - данные пользователя авторизации.
+   * @returns - пользователь.
+   */
   @UseGuards(JwtAuthGuard)
   @Get('user')
-  async currentUser(@Req() request: Request, @UserPayload() payload: UserType): Promise<UserEntity> {
-    return this.userService.findById(payload.id);
+  async currentUser(@UserPayload() payload: UserType): Promise<UserResponceInterface> {
+    const user = await this.userService.findById(payload.id);
+    return await this.userService.buildUserResponce(user);
   }
+
+  /**
+   * Подтверждение почтового ящика аккаунта.
+   * @param token токен подтверждение почты.
+   * @returns 
+   * @Get('confirm')
+   * A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11
+   */
+
+  /**
+   * Получение токена на востановление пароля.
+   * @param param0 данные востановления пароля.
+   * @returns 
+   * @Post('restore')
+   */
+
+  /**
+   * Страница изменения пароля.
+   * @Get('restore')
+   */
+
+   /**
+    * Смена пароля.
+    * @Post('change')
+    */
 
 }
